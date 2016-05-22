@@ -80,19 +80,10 @@ git clone "${APORTS_REPO_URL}" "${LOCAL_APORTS_DIR}"
 
 === Configure `abuild` on your Docker host
 
-In case you do not yet have an `abuild` configuration, assumed to already contain key pair, generate a key pair:
+In case you do not yet have an `abuild` configuration, issue:
 
-[source,sh]
 ----
-if [ ! -f "$HOME/.abuild/abuild.conf" ] ; then
-    abuild-keygen \
-        --append \
-        --install \
-        -n ;
-    sudo abuild-sign -k ~/.abuild/*.rsa /var/cache/apk/APKINDEX.*
-else
-    sudo -- cp -- "$HOME"/.abuild/*.pub '/etc/apk/keys/' ;
-fi ;
+mkdir -- ~/.abuild/
 ----
 
 === Configure the container
@@ -110,6 +101,23 @@ The defaults are aimed to minimize the time to complete builds.
 cd 'recipes/'
 sudo -E docker-compose create
 sudo -E docker-compose start
+----
+
+=== Configure `abuild` within the container
+
+In case you did not yet have an `abuild` configuration, assumed to already contain key pair, generate a key pair. Issue the following from within the container:
+
+[source,sh]
+----
+if [ ! -f "$HOME/.abuild/abuild.conf" ] ; then
+    abuild-keygen \
+        --append \
+        --install \
+        -n ;
+    sudo abuild-sign -k ~/.abuild/*.rsa /var/cache/apk/APKINDEX.*
+else
+    sudo -- cp -- "$HOME"/.abuild/*.pub '/etc/apk/keys/' ;
+fi ;
 ----
 
 === Use
