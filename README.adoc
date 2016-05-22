@@ -121,7 +121,7 @@ else
 fi ;
 ----
 
-=== Use
+== Use the container
 
 Assuming the container you just created and started is the first, and thus named `alpinesdk_alpine-sdk_1`, issue:
 
