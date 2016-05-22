@@ -82,6 +82,7 @@ git clone "${APORTS_REPO_URL}" "${LOCAL_APORTS_DIR}"
 
 In case you do not yet have an `abuild` configuration, issue:
 
+[source,sh]
 ----
 mkdir -- ~/.abuild/
 ----
