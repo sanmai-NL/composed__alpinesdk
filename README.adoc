@@ -53,9 +53,9 @@ Take a look at link:.env[`.env`].
 It contains shell variables relevant to the build.
 
 . `APORTS_REPO_URL`: an URL to a Git remote with the Aports repository.
-. The default is normally okay.
+The default is normally okay.
 . `COMPOSE_PROJECT_NAME`: the Docker Compose project name to deploy as.
-. The default is normally okay.
+The default is normally okay.
 . `LOCAL_APORTS_DIR`: the path to a directory on your Docker host that contains the Aports Git repository.
 . `REGISTRY`: the Docker registry that the dependency image has been tagged as belonging to.
 The default is normally okay.
