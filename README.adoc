@@ -90,8 +90,7 @@ mkdir -- ~/.abuild/
 === Configure the container
 
 You may also take a look at link:recipes/.alpine-developer.env[`recipes/.alpine-developer.env`].
-It contains shell variables relevant to your activities within the container.
-These will be environment variables within your container.
+It contains shell variables relevant to your development activities, which will be environment variables within the container.
 They affect C/C++ source code builds.
 The defaults are aimed to minimize the time to complete builds.
 
@@ -115,7 +114,7 @@ if [ ! -f "$HOME/.abuild/abuild.conf" ] ; then
         --append \
         --install \
         -n ;
-    sudo abuild-sign -k ~/.abuild/*.rsa /var/cache/apk/APKINDEX.*
+    sudo abuild-sign -k ~/.abuild/*.rsa /var/cache/apk/APKINDEX.* ;
 else
     sudo -- cp -- "$HOME"/.abuild/*.pub '/etc/apk/keys/' ;
 fi ;
