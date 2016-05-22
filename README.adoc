@@ -28,9 +28,9 @@ Please issue all of the following shell statements from within the root director
 | https://github.com/sanmai-NL/virtual__alpine-sdk[`alpine-sdk`]
 | ==0.1.0
 
-| by default
+| by necessity
 | software
-| https://www.docker.com/[Docker]
+| https://www.docker.com/[Docker Engine]
 | >=1.11
 
 | by necessity
