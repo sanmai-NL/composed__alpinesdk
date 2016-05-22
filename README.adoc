@@ -1,0 +1,122 @@
+= Docker Compose project: Alpine Linux SDK (`alpinesdk`)
+:caution-caption: ☡ CAUTION
+:important-caption: ❗ IMPORTANT
+:note-caption: 🛈 NOTE
+:sectanchors:
+:sectlinks:
+:sectnumlevels: 6
+:sectnums:
+:source-highlighter: pygments
+:tip-caption: 💡 TIP
+:toc-placement: preamble
+:toc:
+:warning-caption: ⚠ WARNING
+
+Using this project, you can develop http://www.alpinelinux.org/[Alpine Linux] https://wiki.alpinelinux.org/wiki/Developer_Documentation#Building_from_source_and_creating_packages[Aports packages] easily from your existing, non-Alpine Linux workstation.
+
+Please issue all of the following shell statements from within the root directory of this repository.
+
+== Dependencies
+
+[options="header"]
+|===
+
+| Conditions | Type | Name (URL) | Version constraint
+
+| by default
+| image
+| https://github.com/sanmai-NL/virtual__alpine-sdk[`alpine-sdk`]
+| ==0.1.0
+
+| by default
+| software
+| https://www.docker.com/[Docker]
+| >=1.11
+
+| by necessity
+| software
+| https://docs.docker.com/compose/#docker-compose[Docker Compose]
+| >=1.7.1
+
+| by default
+| software
+| https://www.sudo.ws/[Sudo]
+| >=1.8
+
+|===
+
+== To deploy the project
+
+=== Configure the deployment
+
+Take a look at link:.env[`.env`].
+It contains shell variables relevant to the build.
+
+. `APORTS_REPO_URL`: an URL to a Git remote with the Aports repository.
+. The default is normally okay.
+. `COMPOSE_PROJECT_NAME`: the Docker Compose project name to deploy as.
+. The default is normally okay.
+. `LOCAL_APORTS_DIR`: the path to a directory on your Docker host that contains the Aports Git repository.
+. `REGISTRY`: the Docker registry that the dependency image has been tagged as belonging to.
+The default is normally okay.
+
+== Perform the deployment
+
+NOTE: In the following, substitute `fish` with the name of a shell executable, e.g. `bash`.
+
+[source,sh]
+----
+sh -a -c -x -- '. ".env" && fish -i'
+----
+
+=== Clone the Aports Git repository to your Docker host
+
+In case you do not yet have a local clone of the Aports Git repository, clone it:
+
+[source,sh]
+----
+git clone "${APORTS_REPO_URL}" "${LOCAL_APORTS_DIR}"
+----
+
+=== Configure `abuild` on your Docker host
+
+In case you do not yet have an `abuild` configuration, assumed to already contain key pair, generate a key pair:
+
+[source,sh]
+----
+if [ ! -f "$HOME/.abuild/abuild.conf" ] ; then
+    abuild-keygen \
+        --append \
+        --install \
+        -n ;
+    sudo abuild-sign -k ~/.abuild/*.rsa /var/cache/apk/APKINDEX.*
+else
+    sudo -- cp -- "$HOME"/.abuild/*.pub '/etc/apk/keys/' ;
+fi ;
+----
+
+=== Configure the container
+
+You may also take a look at link:recipes/.alpine-developer.env[`recipes/.alpine-developer.env`].
+It contains shell variables relevant to your activities within the container.
+These will be environment variables within your container.
+They affect C/C++ source code builds.
+The defaults are aimed to minimize the time to complete builds.
+
+=== Deploy
+
+[source,sh]
+----
+cd 'recipes/'
+sudo -E docker-compose create
+sudo -E docker-compose start
+----
+
+=== Use
+
+Assuming the container you just created and started is the first, and thus named `alpinesdk_alpine-sdk_1`, issue:
+
+[source,sh]
+----
+sudo docker exec -ti 'alpinesdk_alpine-sdk_1' '/bin/sh'
+----

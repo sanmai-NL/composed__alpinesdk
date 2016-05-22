@@ -1,0 +1,20 @@
+version: '2'
+services:
+  alpine-sdk:
+    env_file: .alpine-developer.env
+    image: "${REGISTRY}/alpine-sdk:0.1.0"
+    labels:
+      role: dev
+    network_mode: host
+    tmpfs: /tmp:rw,size=787448k,mode=1777
+    tmpfs: /run:rw,nosuid
+    tty: true
+    user: alpine-developer
+    volumes:
+     - "${LOCAL_APORTS_DIR}/:/home/alpine-developer/aports/:rw"
+     - "${HOME}/.abuild/:/home/alpine-developer/.abuild/:rw"
+     - "alpine_sdk_var_cache-vol:/var/cache/:rw"
+    working_dir: /home/alpine-developer/
+volumes:
+  alpine_sdk_var_cache-vol:
+    external: false
